@@ -3,7 +3,6 @@
 CS 362 Assignment 3 -- Unit Test 2
 Unit test for dominion.c function endTurn()
 
-
 */
 
 #include <string.h>

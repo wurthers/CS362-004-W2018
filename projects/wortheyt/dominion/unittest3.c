@@ -13,6 +13,21 @@ Unit test for dominion.c function discardCard()
 #include "rngs.h"
 
 
+/*
+
+Preconditions:
+	- Game is initialized
+	- Card is in player's hand at handPos
+	- Card is set for either trash or played pile
+
+Postconditions:
+	- Card is no longer in player's hand
+	- Card is in appropriate pile
+	- No other part of the gaem state is altered
+
+*/
+
+
 int main (int argc, char* argv[]){
 
 

@@ -10,33 +10,30 @@ char inputChar() {
 	char c;
 	char *pool = "[({ ax})]";
 
-	// c = pool[rand() % strlen(pool)];
-	c = (char) (rand() % 94) + 32;
+	c = pool[rand() % strlen(pool)]; // Test with only state-defining characters
+	// c = (char) (rand() % 94) + 32;		// Test with all printable ASCII characters
 
 	return c;
 }
 
-int inputString(char* s)
+char* inputString()
 {
 
 	char c;
-	char temp[16];
+	char *temp = malloc(sizeof(char) * 16);
 
 	char *pool = "rest";
 
 	int i;
 
-	for (i = 0; i < STRSIZE; i++){
-		// c = pool[rand() % strlen(pool)];
-		c = (char) (rand() % 26) + 97;
+	for (i = 0; i < STRSIZE; i++){			// Limit to length of target string
+		c = pool[rand() % strlen(pool)]; // Test with only letters in target string
+		// c = (char) (rand() % 26) + 97;		// Test with all lowercase letters
 		temp[i] = c;
 	}
 
-
-
 	temp[i] = '\0';
-	memcpy(s, temp, strlen(temp));
-
+	return temp;
 }
 
 void testme()
@@ -46,10 +43,10 @@ void testme()
 	while (1)
 	{
 		char c;
-		char s[6] = {'\0'};
+		char *s;
 		tcCount++;
 		c = inputChar();
-		inputString(s);
+		s = inputString();
 		printf("Iteration %d: c = %c, s = %s, state = %d\n", tcCount, c, s, state);
 
 		if (c == '[' && state == 0) state = 1;
