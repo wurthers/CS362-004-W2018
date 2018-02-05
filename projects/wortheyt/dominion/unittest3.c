@@ -12,64 +12,54 @@ Unit test for dominion.c function discardCard()
 #include "dominion_helpers.h"
 #include "rngs.h"
 
+#define TESTFUN "discardCard()"
 
-/*
 
-Preconditions:
-	- Game is initialized
-	- Card is in player's hand at handPos
-	- Card is set for either trash or played pile
+int assert_(int statement){
 
-Postconditions:
-	- Card is no longer in player's hand
-	- Card is in appropriate pile
-	- No other part of the gaem state is altered
+	if (statement == 0){
+		printf("TEST FAILED.\n\n");
+		return 0;
+	}
 
-*/
+	else{
+		printf("TEST OK!\n\n");
+		return 1;
+	}
+}
 
 
 int main (int argc, char* argv[]){
+	int numPlayers = 2;
+	int testPlayer = 0;
+	int kc[10] = {adventurer, embargo, village, minion, mine, cutpurse,
+			sea_hag, tribute, smithy, council_room}; //List borrowed from cardtest4.c
+	int rseed = 100;
 
+	int totalTests = 0;
+	int passedTests = 0;
 
+	struct gameState *game = newGame();
+	struct gameState *testGame = newGame();
 
+	initializeGame(numPlayers, kc, rseed, game);
+
+	// Copy game state into test scenario
+	memcpy(testGame, game, sizeof(struct gameState));		
+	discardCard(0, testPlayer, testGame, 1);
+
+	printf("\n*********TESTING FUNCTION %s*********\n", TESTFUN);
+	printf("******* TEST %d: Cards in hand -= 1 *******\n", totalTests);
+	printf("Cards in hand after discard = %d; Target number = %d.....", testGame->handCount[testPlayer], game->handCount[testPlayer] - 1);
+	passedTests += assert_(testGame->handCount[testPlayer] == game->handCount[testPlayer] - 1);
+	totalTests += 1;
+
+	printf("******* TEST %d: Card in discard pile matches discarded card *******\n", totalTests);
+	printf("Card on top of discard pile = %d; Discarded card = %d.....", testGame->discard[testPlayer][testGame->discardCount[testPlayer] - 1], game->hand[testPlayer][0]);
+	passedTests += assert_(testGame->discard[testPlayer][testGame->discardCount[testPlayer] - 1] == game->hand[testPlayer][0]);
+	totalTests += 1;
+
+	printf("\nUNIT TEST COMPLETED: %d / %d TESTS PASSED.\n\n", passedTests, totalTests);
 
 }
 
-
-int discardCard(int handPos, int currentPlayer, struct gameState *state, int trashFlag)
-{
-	
-	//if card is not trashed, added to Played pile 
-	if (trashFlag < 1)
-		{
-			//add card to played pile
-			state->playedCards[state->playedCardCount] = state->hand[currentPlayer][handPos]; 
-			state->playedCardCount++;
-		}
-	
-	//set played card to -1
-	state->hand[currentPlayer][handPos] = -1;
-	
-	//remove card from player's hand
-	if ( handPos == (state->handCount[currentPlayer] - 1) ) 	//last card in hand array is played
-		{
-			//reduce number of cards in hand
-			state->handCount[currentPlayer]--;
-		}
-	else if ( state->handCount[currentPlayer] == 1 ) //only one card in hand
-		{
-			//reduce number of cards in hand
-			state->handCount[currentPlayer]--;
-		}
-	else 	
-		{
-			//replace discarded card with last card in hand
-			state->hand[currentPlayer][handPos] = state->hand[currentPlayer][ (state->handCount[currentPlayer] - 1)];
-			//set last card to -1
-			state->hand[currentPlayer][state->handCount[currentPlayer] - 1] = -1;
-			//reduce number of cards in hand
-			state->handCount[currentPlayer]--;
-		}
-	
-	return 0;
-}

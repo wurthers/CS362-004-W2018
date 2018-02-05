@@ -18,12 +18,12 @@ Unit test for dominion.c card Smithy
 int assert_(int statement){
 
 	if (statement == 0){
-		printf("TEST FAILED.\n");
+		printf("TEST FAILED.\n\n");
 		return 0;
 	}
 
 	else{
-		printf("TEST OK!\n");
+		printf("TEST OK!\n\n");
 		return 1;
 	}
 }

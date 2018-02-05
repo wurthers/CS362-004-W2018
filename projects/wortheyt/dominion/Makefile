@@ -12,11 +12,49 @@ playdom: dominion.o playdom.c
 testDrawCard: testDrawCard.c dominion.o rngs.o
 	gcc  -o testDrawCard -g testDrawCard.c dominion.o rngs.o $(CFLAGS)
 
-tests.out: unittest1.c dominion.o rngs.o
+tests.out: unittest*.c cardtest*.c dominion.o rngs.o
+	echo "Running Assignment 3 Unit Tests" >> tests.out
+
+	echo "unittest1" >> tests.out
+	gcc -o unittest1 -g unittest1.c dominion.o rngs.o $(CFLAGS)
+	./unittest1 >> tests.out
+	gcov dominion.c >> tests.out
+
+	echo "unittest2" >> tests.out
+	gcc -o unittest2 -g unittest2.c dominion.o rngs.o $(CFLAGS)
+	./unittest2 >> tests.out
+	gcov dominion.c >> tests.out
+
+	echo "unittest3" >> tests.out
+	gcc -o unittest3 -g unittest3.c dominion.o rngs.o $(CFLAGS)
+	./unittest3 >> tests.out
+	gcov dominion.c >> tests.out
+
+	echo "unittest4" >> tests.out
+	gcc -o unittest4 -g unittest4.c dominion.o rngs.o $(CFLAGS)
+	./unittest4 >> tests.out
+	gcov dominion.c >> tests.out
+
+	echo "cardtest1" >> tests.out
 	gcc -o cardtest1 -g cardtest1.c dominion.o rngs.o $(CFLAGS)
+	./cardtest1 >> tests.out
+	gcov dominion.c >> tests.out
+
+	echo "cardtest2" >> tests.out
 	gcc -o cardtest2 -g cardtest2.c dominion.o rngs.o $(CFLAGS)
+	./cardtest2 >> tests.out
+	gcov dominion.c >> tests.out
+
+	echo "cardtest3" >> tests.out
 	gcc -o cardtest3 -g cardtest3.c dominion.o rngs.o $(CFLAGS)
+	./cardtest3 >> tests.out
+	gcov dominion.c >> tests.out
+
+	echo "cardtest4" >> tests.out
 	gcc -o cardtest4 -g cardtest4.c dominion.o rngs.o $(CFLAGS)
+	./cardtest4 >> tests.out
+	gcov dominion.c >> tests.out
+
 
 badTestDrawCard: badTestDrawCard.c dominion.o rngs.o
 	gcc -o badTestDrawCard -g  badTestDrawCard.c dominion.o rngs.o $(CFLAGS)

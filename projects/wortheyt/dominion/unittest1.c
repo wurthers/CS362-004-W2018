@@ -1,7 +1,7 @@
 /*
 
 CS 362 Assignment 3 -- Unit Test 1
-Unit test for dominion.c function shuffle()
+Unit test for dominion.c function isGameOver()
 
 */
 
@@ -13,30 +13,20 @@ Unit test for dominion.c function shuffle()
 #include "dominion_helpers.h"
 #include "rngs.h"
 
+#define TESTFUN "isGameOver()"
 
-/* 
-Preconditions:
-	- The game has been initialized
-	- The player has a deck of cards
+int assert_(int statement){
 
-Postconditions:
-	- The player's deck is not in the same order it started in
-	- The player's deck is in a sufficiently random order
-	- Nothing else in the gamestate has been changed
-*/
+	if (statement == 0){
+		printf("TEST FAILED.\n\n");
+		return 0;
+	}
 
-
-
-void assert_(int statement){
-
-	if (statement == 0)
-		printf("Test FAILED.\n");
-
-	else
-		printf("Test OK!\n");
-
+	else{
+		printf("TEST OK!\n\n");
+		return 1;
+	}
 }
-
 
 int main (int argc, char* argv[]){
 
@@ -45,75 +35,52 @@ int main (int argc, char* argv[]){
 			sea_hag, tribute, smithy, council_room}; //List borrowed from cardtest4.c
 	int rseed = 100;
 
-	struct gameState *game1 = newGame();
-	struct gameState *game2 = newGame();
+	int totalTests = 0;
+	int passedTests = 0;
+
+	struct gameState *game = newGame();
+	struct gameState *testGame = newGame();
 
 
-	initializeGame(numPlayers, kc, rseed, game1);
-	initializeGame(numPlayers, kc, rseed, game2);
+	initializeGame(numPlayers, kc, rseed, game);
 
-	printf("Checking that both gameStates are identical: ");
-	assert_(memcmp(game1, game2, sizeof(struct gameState)) == 0);
+	// Copy game state into test scenario
+	memcpy(testGame, game, sizeof(struct gameState));		
 
-
-	printf("Shuffling decks in game 1...\n");
-	int testPlayer;
-
-	for (testPlayer = 0; testPlayer < numPlayers; testPlayer++){
-
-		// Testing code here
-
-	}
-
-	printf("Shuffling decks in game 2...\n");
-	for (testPlayer = 0; testPlayer < numPlayers; testPlayer++)
-		shuffle(testPlayer, game1);
-
-	printf("Checking that both gameStates are identical: ");
-	assert_(memcmp(game1, game2, sizeof(struct gameState)) == 0);
+	// Set 3 arbitrary supply piles to empty
+	testGame->supplyCount[smithy] = 0;
+	testGame->supplyCount[great_hall] = 0;
+	testGame->supplyCount[mine] = 0;
 
 
-	// struct gameState *before;
-	
-	// memcpy(&before, &game1, sizeof(struct gameState));
+	printf("\n*********TESTING FUNCTION %s*********\n", TESTFUN);
+
+	printf("******* TEST %d: Default case - game not over *******\n", totalTests);
+	passedTests += assert_(isGameOver(game) == 0);
+	totalTests += 1;
 
 
+	printf("******* TEST %d: 3 Supply Piles empty *******\n", totalTests);
+	// Set 3 arbitrary supply piles to empty
+	testGame->supplyCount[smithy] = 0;
+	testGame->supplyCount[great_hall] = 0;
+	testGame->supplyCount[mine] = 0;
+
+	printf("Game is Over == %d....", isGameOver(testGame));
+	passedTests += assert_(isGameOver(testGame) == 1);
+	totalTests += 1;
 
 
-	// printf("Game initialized.\n");
+	printf("******* TEST %d: Province Pile empty *******\n", totalTests);
+	memcpy(testGame, game, sizeof(struct gameState));
+	testGame->supplyCount[province] = 0;
+	printf("Game is Over == %d....", isGameOver(testGame));	
+	passedTests += assert_(isGameOver(testGame) == 1);
+	totalTests += 1;
 
+	printf("\nUNIT TEST COMPLETED: %d / %d TESTS PASSED.\n\n", passedTests, totalTests);
 
-	free(game1);
-	free(game2);
+	free(game);
+	free(testGame);
 }
 
-
-
-// int shuffle(int player, struct gameState *state) {
-
-// 	int newDeck[MAX_DECK];
-// 	int newDeckPos = 0;
-// 	int card;
-// 	int i;
-
-// 	if (state->deckCount[player] < 1)
-// 		return -1;
-// 	qsort ((void*)(state->deck[player]), state->deckCount[player], sizeof(int), compare); 
-// 	/* SORT CARDS IN DECK TO ENSURE DETERMINISM! */
-
-// 	while (state->deckCount[player] > 0) {
-// 		card = floor(Random() * state->deckCount[player]);
-// 		newDeck[newDeckPos] = state->deck[player][card];
-// 		newDeckPos++;
-// 		for (i = card; i < state->deckCount[player]-1; i++) {
-// 			state->deck[player][i] = state->deck[player][i+1];
-// 		}
-// 		state->deckCount[player]--;
-// 	}
-// 	for (i = 0; i < newDeckPos; i++) {
-// 		state->deck[player][i] = newDeck[i];
-// 		state->deckCount[player]++;
-// 	}
-
-// 	return 0;
-// }
