@@ -54,7 +54,6 @@ void countEstates(struct gameState *game, int player, int *numEstHand, int *numE
 
 int main (int argc, char* argv[]){
 
-
 	int numPlayers = 2;
 	int testPlayer = 0;
 	int kc[10] = {adventurer, baron, village, minion, mine, cutpurse,
@@ -83,9 +82,10 @@ int main (int argc, char* argv[]){
 	for (choice1 = 0; choice1 < 2; choice1++){
 		// Copy game state into test scenario
 		memcpy(testGame, game, sizeof(struct gameState));
-
+		// Call CardEffect() using card name and default parameters
 		cardEffect(baron, choice1, 0, 0, testGame, handPos, &coinBonus);
 
+		// Count estates before and after playing card [in both hand and discard piles]
 		countEstates(game, testPlayer, &estPreHand, &estPreDiscard);
 		countEstates(testGame, testPlayer, &estPostHand, &estPostDiscard);
 

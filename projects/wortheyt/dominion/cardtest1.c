@@ -59,7 +59,7 @@ int main (int argc, char* argv[]){
 	cardEffect(smithy, 0, 0, 0, testGame, handPos, &coinBonus);
 
 	// Test 1: Number of cards in hand += 2
-	printf("******* TEST 1: Number of cards in hand *******\n");
+	printf("******* TEST %d: Number of cards in hand *******\n", totalTests);
 
 	// Check number of cards in hand after the fact
 	printf("Number of cards in hand after playing %s = %d; Target number = %d....", TESTCARD,
@@ -68,7 +68,7 @@ int main (int argc, char* argv[]){
 	totalTests += 1;
 
 	// Test 2: Number of cards left in deck -= 3
-	printf("******* TEST 2: Number of cards in deck *******\n");
+	printf("******* TEST %d: Number of cards in deck *******\n", totalTests);
 	printf("Number of cards in deck after playing %s = %d; Target number = %d....", TESTCARD,
 			testGame->deckCount[testPlayer], game->deckCount[testPlayer] - 3);
 	passedTests += assert_(testGame->deckCount[testPlayer] == game->deckCount[testPlayer] - 3);

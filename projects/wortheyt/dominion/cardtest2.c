@@ -71,11 +71,11 @@ int main (int argc, char* argv[]){
 
 	initializeGame(numPlayers, kc, rseed, game);
 
-
+	game->hand[testPlayer][0] = adventurer;
 
 	// Copy game state into test scenario
 	memcpy(testGame, game, sizeof(struct gameState));
-
+	// Call CardEffect() using card name and default parameters
 	cardEffect(adventurer, 0, 0, 0, testGame, handPos, &coinBonus);
 
 	int trInHand = 0, trInDeck = 0;
@@ -84,9 +84,21 @@ int main (int argc, char* argv[]){
 	countTreasures(game, testPlayer, &trInDeck, &trInHand);
 	countTreasures(testGame, testPlayer, &trInHandTest, &trInDeckTest);
 
-
-
 	printf("\n*********TESTING CARD %s*********\n", TESTCARD);
+
+	// Test 1: Number of cards in hand after == number before
+	printf("******* TEST %d: Number of cards in hand *******\n", totalTests);
+	printf("Number of cards in hand after playing %s = %d; Target number = %d....", TESTCARD,
+			testGame->handCount[testPlayer], game->handCount[testPlayer]);
+	passedTests += assert_(testGame->handCount[testPlayer] == game->handCount[testPlayer]);
+	totalTests += 1;
+
+	// Test 2: Number of cards left in deck -= 1
+	printf("******* TEST %d: Number of cards in deck *******\n", totalTests);
+	printf("Number of cards in deck after playing %s = %d; Target number = %d....", TESTCARD,
+			testGame->deckCount[testPlayer], game->deckCount[testPlayer] - 3);
+	passedTests += assert_(testGame->deckCount[testPlayer] == game->deckCount[testPlayer] - 1);
+	totalTests += 1;
 
 	// In the case that the deck has less than 2 treasures, expect all treasures will be drawn
 	if (trInDeck <= 1){
@@ -94,12 +106,14 @@ int main (int argc, char* argv[]){
 		printf("Number of treasures in hand before playing %s = %d.\n", TESTCARD, trInHand);
 		printf("Number of treasures in deck before playing %s = %d.\n\n", TESTCARD, trInDeck);
 
+		printf("******* TEST %d: Number of treasures in hand *******\n", totalTests);
 		printf("Number of treasures in hand after playing %s = %d; Target number = %d....", TESTCARD,
 			trInHandTest, trInHand + trInDeck);
 		passedTests += assert_(trInHandTest == trInHand + trInDeck);
 		totalTests += 1;
 
-		printf("Number of treasures in hand after playing %s = %d; Target number = %d....", TESTCARD,
+		printf("******* TEST %d: Number of treasures in deck *******\n", totalTests);
+		printf("Number of treasures in deck after playing %s = %d; Target number = %d....", TESTCARD,
 			trInDeckTest, trInDeck - trInDeck);
 		passedTests += assert_(trInDeckTest == trInDeck - trInDeck);
 		totalTests += 1;
@@ -112,15 +126,19 @@ int main (int argc, char* argv[]){
 		printf("Number of treasures in hand before playing %s = %d.\n", TESTCARD, trInHand);
 		printf("Number of treasures in deck before playing %s = %d.\n\n", TESTCARD, trInDeck);
 
+		printf("******* TEST %d: Number of treasures in hand *******\n", totalTests);
 		printf("Number of treasures in hand after playing %s = %d; Target number = %d.\n", TESTCARD,
 			trInHandTest, trInHand + 2);
-		passedTests += assert_(trInHandTest == trInHand + 2);
+		passedTests += assert_(trInHandTest == trInHand);
 		totalTests += 1;
 
+		printf("******* TEST %d: Number of treasures in deck *******\n", totalTests);
 		printf("Number of treasures in hand after playing %s = %d; Target number = %d.\n", TESTCARD,
 			trInDeckTest, trInDeck - 2);
 		passedTests += assert_(trInDeckTest == trInDeck + 2);
 		totalTests += 1;
+
+
 	}
 
 	printf("\nUNIT TEST COMPLETED: %d / %d TESTS PASSED.\n\n", passedTests, totalTests);
