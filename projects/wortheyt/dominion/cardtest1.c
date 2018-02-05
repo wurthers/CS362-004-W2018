@@ -15,13 +15,17 @@ Unit test for dominion.c card Smithy
 
 #define TESTCARD "smithy"
 
-void assert_(int statement){
+int assert_(int statement){
 
-	if (statement == 0)
-		printf("Test FAILED.\n");
+	if (statement == 0){
+		printf("TEST FAILED.\n");
+		return 0;
+	}
 
-	else
-		printf("Test OK!\n");
+	else{
+		printf("TEST OK!\n");
+		return 1;
+	}
 }
 
 
@@ -35,30 +39,46 @@ int main (int argc, char* argv[]){
 	int coinBonus = 0;
 	int handPos = 0;
 
+	int totalTests = 0;
+	int passedTests = 0;
+
 	struct gameState *game = newGame();
 	struct gameState *testGame = newGame();
 
 	initializeGame(numPlayers, kc, rseed, game);
 
+
 	// Copy game state into test scenario
 	memcpy(testGame, game, sizeof(struct gameState));
 
-	printf("*********Testing card %s*********\n", TESTCARD);
-	printf("Number of cards before playing %s = %d.\n", TESTCARD, game->handCount[testPlayer]);
+	printf("\n*********TESTING CARD %s*********\n", TESTCARD);
+	printf("Number of cards in hand before playing %s = %d.\n", TESTCARD, game->handCount[testPlayer]);
+	printf("Number of cards in deck before playing %s = %d.\n\n", TESTCARD, game->deckCount[testPlayer]);
 
-	// Test: call cardEffect() with smithy passed in as card
+	// Call cardEffect() with smithy passed in as card
 	cardEffect(smithy, 0, 0, 0, testGame, handPos, &coinBonus);
 
-	// Test 1: Number of cards in hand += 3
-	printf("*******TEST 1: Number of cards *******\n");
+	// Test 1: Number of cards in hand += 2
+	printf("******* TEST 1: Number of cards in hand *******\n");
 
 	// Check number of cards in hand after the fact
-	printf("Number of cards after playing %s = %d; Target number = %d.", TESTCARD,
+	printf("Number of cards in hand after playing %s = %d; Target number = %d....", TESTCARD,
 			testGame->handCount[testPlayer], game->handCount[testPlayer] + 2);
-	assert_(testGame->handCount[testPlayer] == game->handCount[testPlayer] + 2);
+	passedTests += assert_(testGame->handCount[testPlayer] == game->handCount[testPlayer] + 2);
+	totalTests += 1;
+
+	// Test 2: Number of cards left in deck -= 3
+	printf("******* TEST 2: Number of cards in deck *******\n");
+	printf("Number of cards in deck after playing %s = %d; Target number = %d....", TESTCARD,
+			testGame->deckCount[testPlayer], game->deckCount[testPlayer] - 3);
+	passedTests += assert_(testGame->deckCount[testPlayer] == game->deckCount[testPlayer] - 3);
+	totalTests += 1;
+
+	printf("\nUNIT TEST COMPLETED: %d / %d TESTS PASSED.\n\n", passedTests, totalTests);
 
 
-
+	free(game);
+	free(testGame);
 
 }
 

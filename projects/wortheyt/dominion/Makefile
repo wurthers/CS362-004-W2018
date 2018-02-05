@@ -15,6 +15,8 @@ testDrawCard: testDrawCard.c dominion.o rngs.o
 tests.out: unittest1.c dominion.o rngs.o
 	gcc -o test1 -g unittest1.c dominion.o rngs.o $(CFLAGS)
 	gcc -o cardtest1 -g cardtest1.c dominion.o rngs.o $(CFLAGS)
+	gcc -o cardtest2 -g cardtest2.c dominion.o rngs.o $(CFLAGS)
+	gcc -o cardtest3 -g cardtest3.c dominion.o rngs.o $(CFLAGS)
 
 badTestDrawCard: badTestDrawCard.c dominion.o rngs.o
 	gcc -o badTestDrawCard -g  badTestDrawCard.c dominion.o rngs.o $(CFLAGS)
