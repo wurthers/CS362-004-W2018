@@ -13,7 +13,20 @@ testDrawCard: testDrawCard.c dominion.o rngs.o
 	gcc  -o testDrawCard -g testDrawCard.c dominion.o rngs.o $(CFLAGS)
 
 randomtests.out: randomtest*.c dominion.o rngs.o
-	gcc -o randtestadv randomtestadventurer.c dominion.o rngs.o $(CFLAGS)
+	echo "Running Assignment 4 Random Test for Adventurer" >> randomtestadventurer.out
+	gcc -o randomtestadventurer randomtestadventurer.c dominion.o rngs.o $(CFLAGS)
+	./randomtestadventurer >> randomtestadventurer.out
+	gcov dominion.c >> randomtestadventurer.out
+
+	echo "Running Assignment 4 Random Test for Village" >> randomtestcard1.out
+	gcc  -o randomtestcard1 randomtestcard1.c dominion.o rngs.o $(CFLAGS)
+	./randomtestcard1 >> randomtestcard1.out
+	gcov dominion.c >> randomtestcard1.out
+
+	echo "Running Assignment 4 Random Test for Baron" >> randomtestcard2.out
+	gcc -o randomtestcard2 randomtestcard2.c dominion.o rngs.o $(CFLAGS)
+	./randomtestcard2 >> randomtestcard2.out
+	gcov dominion.c >> randomtestcard2.out
 
 tests.out: unittest*.c cardtest*.c dominion.o rngs.o
 	echo "Running Assignment 3 Unit Tests" >> tests.out

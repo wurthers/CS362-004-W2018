@@ -53,8 +53,8 @@ void countTreasures(struct gameState* game, int player, int *trInDeck, int *trIn
 
 }
 
-// Generate a random deck with a fixed number of treasures
-void generateDeck(struct gameState* game, int player, int kc[10], int decksize, int treasures){
+// Generate a random deck with an arbitrary number of treasures
+void generateDeck(struct gameState* game, int player, int kc[10], int decksize){
 
 	if (decksize > MAX_DECK)
 		decksize = MAX_DECK;
@@ -89,7 +89,7 @@ int main (int argc, char* argv[]){
 
 	srand(time(NULL));
 
-	int numTests = 100;	// How many full cycles of the test suite to run?
+	int numTests = 10;	// How many full cycles of the test suite to run?
 
 	int numPlayers;
 	int testPlayer;
@@ -128,27 +128,24 @@ int main (int argc, char* argv[]){
 		// Initialize game to start
 		initializeGame(numPlayers, kc, rseed, post);
 
-
 		// Values to Test:
 		// numPlayers -- Range = 1-4
 		// kc -- Generate random list of cards
 		// testPlayer -- Range = 1-4
 		// handPos -- Range = 1-7
 
-
 		// Pick a hand slot and stick the adventurer card there
-		handPos = 0;
+		handPos = 0;	// Randomizaiton caused issues with make target; keeping this one 0
 		post->hand[testPlayer][handPos] = adventurer;
 		printf("Card at hand position: %d\n", handPos);
 
 		// Randomize a deck
 		int decksize = (rand() % MAX_DECK - 1) + 1; 	// Decksize should be between 1 and MAX_DECK
-		int treasures = (rand() % decksize);		// Ensure fewer treasures than the decksize
+		// int treasures = (rand() % decksize);		// Ensure fewer treasures than the decksize
 
 		printf("Using a deck of size: %d\n", decksize);
-		printf("Number of treasures in deck: %d\n", treasures);
 
-		generateDeck(post, testPlayer, kc, decksize, treasures);
+		generateDeck(post, testPlayer, kc, decksize);
 
 		printf("Deck generation complete\n");
 
@@ -162,10 +159,9 @@ int main (int argc, char* argv[]){
 		countTreasures(pre, testPlayer, &trInDeck, &trInHand);
 		countTreasures(post, testPlayer, &trInHandTest, &trInDeckTest);
 
+		printf("Treasures in deck: %d\n\n", trInDeck);	
 
 		if (trInDeck < 2){
-
-			printf("Testing <2 treasure in deck...\n\n");	
 
 			// Test: Number of cards in hand after == number before
 			printf("******* TEST %d: Number of cards in hand *******\n", totalTests);
@@ -200,8 +196,6 @@ int main (int argc, char* argv[]){
 		}
 
 		else if (trInDeck >= 2){
-
-			printf("Testing with more than two treasures in deck...\n\n");
 
 			// Test: Number of cards in hand after += 1
 			printf("******* TEST %d: Number of cards in hand *******\n", totalTests);
@@ -239,16 +233,7 @@ int main (int argc, char* argv[]){
 
 	}
 
-
-	// Generate random values within some range
-	
-
-	// Loop for some large number of tests
-	// Call function to verify gamestate and assert test metrics
-
-	// DO SOME TESTS
-
-	printf("\nUNIT TEST COMPLETED: %d / %d TESTS PASSED.\n\n", passedTests, totalTests);
+	printf("\n\nRANDOM TESTING COMPLETED: %d / %d TESTS PASSED.\n\n", passedTests, totalTests);
 
 	free(pre);
 	free(post);
