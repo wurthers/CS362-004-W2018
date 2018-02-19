@@ -12,6 +12,9 @@ playdom: dominion.o playdom.c
 testDrawCard: testDrawCard.c dominion.o rngs.o
 	gcc  -o testDrawCard -g testDrawCard.c dominion.o rngs.o $(CFLAGS)
 
+randomtests.out: randomtest*.c dominion.o rngs.o
+	gcc -o randtestadv randomtestadventurer.c dominion.o rngs.o $(CFLAGS)
+
 tests.out: unittest*.c cardtest*.c dominion.o rngs.o
 	echo "Running Assignment 3 Unit Tests" >> tests.out
 
