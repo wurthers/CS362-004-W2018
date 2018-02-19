@@ -31,7 +31,6 @@ int assert_(int statement){
 	}
 }
 
-
 // Generate a random deck with an arbitrary number of treasures
 void generateDeck(struct gameState* game, int player, int kc[10], int decksize){
 
