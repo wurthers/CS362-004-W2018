@@ -1,7 +1,7 @@
 /*
 
-CS 362 Assignment 3 -- Card Test 3
-Unit test for dominion.c card Baron
+CS 362 Assignment 4 -- Random Tester 2
+Random tester for dominion.c card Baron
 
 */
 
@@ -12,8 +12,10 @@ Unit test for dominion.c card Baron
 #include "dominion.h"
 #include "dominion_helpers.h"
 #include "rngs.h"
+#include <time.h>
 
 #define TESTCARD "baron"
+
 
 int assert_(int statement){
 
@@ -52,53 +54,111 @@ void countEstates(struct gameState *game, int player, int *numEstHand, int *numE
 }
 
 
+// Generate a random deck with an arbitrary number of treasures
+void generateDeck(struct gameState* game, int player, int kc[10], int decksize){
+
+	if (decksize > MAX_DECK)
+		decksize = MAX_DECK;
+
+	if (decksize < 1)
+		decksize = 1;
+
+	int i;
+	int card;
+
+	for (i = 0; i < decksize; i++){
+		card = (rand() % 14);
+
+		if (card < 10){
+			card = kc[card]; // If not a treasure, use a kingdom card
+		}
+
+		else if (card >= 10){ // copper = 4, silver = 5, gold = 6
+			card = card - 6; // Transpose to one of the treasure cards
+		}
+
+		game->deck[player][i] = card;
+
+	}
+	
+	game->deckCount[player] = decksize;
+
+}
+
+
+
 int main (int argc, char* argv[]){
 
-	int numPlayers = 2;
-	int testPlayer = 0;
-	int kc[10] = {adventurer, baron, village, minion, mine, cutpurse,
-			sea_hag, tribute, smithy, council_room}; //List borrowed from cardtest4.c
+	srand(time(NULL));
+
+	int numTests = 10;	// How many full cycles of the test suite to run?
+
+	int numPlayers;
+	int testPlayer;
+	int kc[10] = {adventurer, embargo, village, minion, mine, cutpurse,
+			sea_hag, tribute, smithy, council_room}; //List borrowed from cardtest4.c; //List borrowed from cardtest4.c
 	int rseed = 100;
-	int coinBonus = 0;
-	int handPos = 0;
+	int coinBonus;
+	int handPos;
 	int choice1;
+	coinBonus = 0; // cardEffect expects a 0 passed in from playCard()
+
 
 	int totalTests = 0;
 	int passedTests = 0;
 
-	struct gameState *game = newGame();
-	struct gameState *testGame = newGame();
-
-	initializeGame(numPlayers, kc, rseed, game);
+	// // Instantiate some games.
+	struct gameState *pre = newGame();	// Storage for pre-card game state
+	struct gameState *post = newGame();	// The game we're going to operate on
+	struct gameState clean = { 0 };		// clean will be used to erase structs every loop
 
 	int estPreHand, estPostHand;
 	int estPreDiscard, estPostDiscard;
 
-	// Guarantee the player has an estate to discard
-	game->hand[testPlayer][0] = baron;
-	game->hand[testPlayer][1] = estate;
-
-	game->whoseTurn = testPlayer;
+	int n;
+	// Main Testing Loop : Rnage = 0-numTests
+	for (n = 0; n < numTests; n++) {
 
 
-	for (choice1 = 0; choice1 < 2; choice1++){
+		printf("On Test Loop #%d\n", n);
+		printf("Random Parameters:\n");
+		numPlayers = (rand() % 3) + 2;	// MAX_PLAYERS == 4, so we'll be kind. Range 2-4
+		testPlayer = (rand() % 4);		// testPlayer; Range 0-3
+
+		printf("Number of players: %d\n", numPlayers);
+		printf("Testing player: %d\n", testPlayer);
+
+		// Initialize game to start
+		initializeGame(numPlayers, kc, rseed, post);
+
+		int decksize = (rand() % MAX_DECK - 1) + 1; 	// Decksize should be between 1 and MAX_DECK
+		generateDeck(post, testPlayer, kc, decksize);
+
+		choice1 = rand() % 2;
+		handPos = 0;					// This is bound to cause some issues
+		
+		post->hand[testPlayer][handPos] = baron;
+
+		if (rand() % 2 == 1)
+			post->hand[testPlayer][handPos + 1] = estate; // Coin flip on whether to guarantee an estate
+
 		// Copy game state into test scenario
-		memcpy(testGame, game, sizeof(struct gameState));
+		memcpy(pre, post, sizeof(struct gameState));
+
 		// Call CardEffect() using card name and default parameters
-		cardEffect(baron, choice1, 0, 0, testGame, handPos, &coinBonus);
+		cardEffect(baron, choice1, 0, 0, post, handPos, &coinBonus);
 
 		// Count estates before and after playing card [in both hand and discard piles]
-		countEstates(game, testPlayer, &estPreHand, &estPreDiscard);
-		countEstates(testGame, testPlayer, &estPostHand, &estPostDiscard);
+		countEstates(pre, testPlayer, &estPreHand, &estPreDiscard);
+		countEstates(post, testPlayer, &estPostHand, &estPostDiscard);
 
 		printf("\n*********TESTING CARD %s WITH CHOICE %d *********\n\n", TESTCARD, choice1);
 
 		printf("******* TEST %d: Number of Buys after playing *******\n", totalTests);
 		printf("Number of Buys after playing %s = %d; Target number = %d....", TESTCARD,
-				testGame->numBuys, game->numBuys + 1);
-		passedTests += assert_(testGame->numBuys == game->numBuys + 1);
+				post->numBuys, pre->numBuys + 1);
+		passedTests += assert_(post->numBuys == pre->numBuys + 1);
 		totalTests += 1;
-
 
 		if (choice1 == 0){	// Don't Discard
 			printf("Not Discarding -- Gain an Estate!\n");
@@ -106,8 +166,8 @@ int main (int argc, char* argv[]){
 			printf("******* TEST %d: Number of cards in hand *******\n", totalTests);
 			// Number of cards after the fact should be -= 1
 			printf("Number of cards in hand after playing %s = %d; Target number = %d....", TESTCARD,
-					testGame->handCount[testPlayer], game->handCount[testPlayer]);
-			passedTests += assert_(testGame->handCount[testPlayer] == game->handCount[testPlayer]);
+					post->handCount[testPlayer], pre->handCount[testPlayer]);
+			passedTests += assert_(post->handCount[testPlayer] == pre->handCount[testPlayer]);
 			totalTests += 1;
 
 			// Check number of estates in hand before and after
@@ -120,8 +180,8 @@ int main (int argc, char* argv[]){
 			// Check number of coins before and after
 			printf("******* TEST %d: Number of Coins ********\n", totalTests);
 			printf("Number of coins after playing %s = %d; Target number = %d....", TESTCARD,
-					testGame->coins, game->coins);
-			passedTests += assert_(testGame->coins == game->coins);
+					post->coins, pre->coins);
+			passedTests += assert_(post->coins == pre->coins);
 			totalTests += 1;
 		}
 
@@ -131,8 +191,8 @@ int main (int argc, char* argv[]){
 			printf("******* TEST %d: Number of cards in hand *******\n", totalTests);
 			// Number of cards after the fact should be -= 2, accounting for discarded card
 			printf("Number of cards in hand after playing %s = %d; Target number = %d....", TESTCARD,
-					testGame->handCount[testPlayer], game->handCount[testPlayer] - 2);
-			passedTests += assert_(testGame->handCount[testPlayer] == game->handCount[testPlayer] - 2);
+					post->handCount[testPlayer], pre->handCount[testPlayer] - 2);
+			passedTests += assert_(post->handCount[testPlayer] == pre->handCount[testPlayer] - 2);
 			totalTests += 1;
 
 			// Check number of estates in hand before and after
@@ -145,10 +205,11 @@ int main (int argc, char* argv[]){
 			// Check number of coins before and after
 			printf("******* TEST %d: Number of Coins ********\n", totalTests);
 			printf("Number of coins after playing %s = %d; Target number = %d....", TESTCARD,
-				testGame->coins, game->coins + 4);
-			passedTests += assert_(testGame->coins == game->coins + 4);
+				post->coins, pre->coins + 4);
+			passedTests += assert_(post->coins == pre->coins + 4);
 			totalTests += 1;
 		}
+		
 
 		// Check number of estates in discard before and after
 		printf("******* TEST %d: Number of Estates in discard ********\n", totalTests);
@@ -156,12 +217,17 @@ int main (int argc, char* argv[]){
 				estPostDiscard, estPreDiscard + 1);
 		passedTests += assert_(estPostDiscard == estPreDiscard + 1);
 		totalTests += 1;
-			
+
+
+	// Cleanup
+	*post = clean;
+	*pre = clean;
+
 	}
 
-	printf("\nUNIT TEST COMPLETED: %d / %d TESTS PASSED.\n\n", passedTests, totalTests);
+	printf("\n RANDOM TESTING COMPLETED: %d / %d TESTS PASSED.\n\n", passedTests, totalTests);
 
-	free(game);
-	free(testGame);
+	free(post);
+	free(pre);
 
 }

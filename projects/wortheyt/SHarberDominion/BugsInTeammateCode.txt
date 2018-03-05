@@ -1,0 +1,108 @@
+Bug ID #0001
+Name - Number of actions after playing Village card is incorrect
+Software - SHarberDominion/dominion.c
+Classification - Gameplay Affecting
+
+Description:
+
+The number of Actions after playing the card Village is incorrect.
+The correct number of actions should be equal to 1 plus the number of actions had before playing the card.
+
+In the case of the tests used, using Village with 1 Action remaining results in either 0 or -1 Actions.
+
+
+Culprit code:
+
+Function Village(), called from function cardEffect():
+
+1 	int Village(int currentPlayer, struct gameState *state, int handPos)
+2	{	
+3		//+1 Card
+4		drawCard(currentPlayer, state);
+5	
+6		//+2 Actions
+7		state->numActions = state->numActions - 1;
+8	
+9		//discard played card from hand
+10		discardCard(handPos, currentPlayer, state, 0);
+11		return 0;
+12	}
+
+
+In line 6, instead of being incremented by two, state->numActions decrements by 1.
+
+
+Reproducibility:
+
+This bug appears to occur consistently in random tests, regardless of starting conditions.
+
+** The bug seems to vary slightly depending on what test is run. In the case of random tests [randomtestcard1.c], using Village with 1 Action remaining results in -1 action points. However in static unit testing with the same conditions, it results in 0 Action points remaining. It is unclear whether this is a result of the code itself or an error in the test suite.
+
+***********************************************
+
+Bug ID #0002
+Name - Number of cards in hand after playing Adventurer is incorrect
+Software - SHarberDominion/dominion.c
+Classification - Severe, Gameplay Affecting
+
+Reproducibility:  Fair
+
+** The bug will occasionally not appear in random testing. It is unclear what the necessary parameters are to reproduce the bug.
+
+
+Description: 
+
+After playing the Adventurer card, the number of Cards in hand is different than expected.
+
+In unit testing this failed with both test cases [treasures in deck <2 and >= 2]:
+
+Unit Test outputs:
+
+	Testing <2 treasure in deck...
+
+	******* TEST 0: Number of cards in hand *******
+	Number of cards in hand after playing adventurer = 9; Target number = 5....TEST FAILED.
+
+
+	Testing with more than two treasures in deck...
+
+	******* TEST 4: Number of cards in hand *******
+	Number of cards in hand after playing adventurer = 9; Target number = 6.....TEST FAILED.
+
+
+
+However, in randomly generated tests, the test is shown to succeed for a small number of cases [~10%].
+It appears this generally happens at low input/target values, but 
+
+Random Test outputs:
+
+	******* TEST 12: Number of cards in hand *******
+	Number of cards in hand after playing adventurer = 2; Target number = 2.....TEST OK!
+
+
+
+Possible Culprit Code:
+
+
+1	int Adventurer(struct gameState *state, int currentPlayer, int temphand[], int z, int drawntreasure, int cardDrawn)
+2	{
+3		while (drawntreasure <= 2) {
+4			if (state->deckCount[currentPlayer] <1) {//if the deck is empty we need to shuffle discard and add to deck
+5				shuffle(currentPlayer, state);
+6			}
+7			drawCard(currentPlayer, state);
+8			cardDrawn = state->hand[currentPlayer][state->handCount[currentPlayer] - 1];//top card of hand is most recently drawn card.
+9			if (cardDrawn == copper || cardDrawn == silver || cardDrawn == gold)
+10				drawntreasure++;
+11			else {
+12				temphand[z] = cardDrawn;
+13				state->handCount[currentPlayer]--; //this should just remove the top card (the most recently drawn one).
+14				z++;
+15			}
+16		}
+17		while (z - 1 >= 0) {
+18			state->discard[currentPlayer][state->discardCount[currentPlayer]++] = temphand[z - 1]; // discard all cards in play that have been drawn
+19			z = z - 1;
+20		}
+21		return 0;
+22	}

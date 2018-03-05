@@ -1,0 +1,11 @@
+<<<<<<< HEAD
+*.o
+*.gcda
+*.gcno
+*.gcov
+=======
+*.gcda
+*.gcno
+*.gcov
+*.o
+>>>>>>> wortheyt-assignment-2

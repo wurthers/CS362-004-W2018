@@ -1,0 +1,238 @@
+Running Assignment 4 Random Test for Baron
+On Test Loop #0
+Random Parameters:
+Number of players: 2
+Testing player: 3
+
+*********TESTING CARD baron WITH CHOICE 1 *********
+
+******* TEST 0: Number of Buys after playing *******
+Number of Buys after playing baron = 2; Target number = 2....TEST OK!
+
+Discarding Estate!
+******* TEST 1: Number of cards in hand *******
+Number of cards in hand after playing baron = 0; Target number = -2....TEST FAILED.
+
+******* TEST 2: Number of Estates in hand ********
+Number of estates in hand after playing baron = 0; Target number = -1....TEST FAILED.
+
+******* TEST 3: Number of Coins ********
+Number of coins after playing baron = 8; Target number = 8....TEST OK!
+
+******* TEST 4: Number of Estates in discard ********
+Number of estates in discard after playing baron = 0; Target number = 1....TEST FAILED.
+
+On Test Loop #1
+Random Parameters:
+Number of players: 4
+Testing player: 2
+
+*********TESTING CARD baron WITH CHOICE 0 *********
+
+******* TEST 5: Number of Buys after playing *******
+Number of Buys after playing baron = 2; Target number = 2....TEST OK!
+
+Not Discarding -- Gain an Estate!
+******* TEST 6: Number of cards in hand *******
+Number of cards in hand after playing baron = 0; Target number = 0....TEST OK!
+
+******* TEST 7: Number of Estates in hand ********
+Number of estates in hand after playing baron = 0; Target number = 0....TEST OK!
+
+******* TEST 8: Number of Coins ********
+Number of coins after playing baron = 4; Target number = 4....TEST OK!
+
+******* TEST 9: Number of Estates in discard ********
+Number of estates in discard after playing baron = 0; Target number = 1....TEST FAILED.
+
+On Test Loop #2
+Random Parameters:
+Number of players: 4
+Testing player: 2
+
+*********TESTING CARD baron WITH CHOICE 0 *********
+
+******* TEST 10: Number of Buys after playing *******
+Number of Buys after playing baron = 2; Target number = 2....TEST OK!
+
+Not Discarding -- Gain an Estate!
+******* TEST 11: Number of cards in hand *******
+Number of cards in hand after playing baron = 0; Target number = 0....TEST OK!
+
+******* TEST 12: Number of Estates in hand ********
+Number of estates in hand after playing baron = 0; Target number = 0....TEST OK!
+
+******* TEST 13: Number of Coins ********
+Number of coins after playing baron = 4; Target number = 4....TEST OK!
+
+******* TEST 14: Number of Estates in discard ********
+Number of estates in discard after playing baron = 0; Target number = 1....TEST FAILED.
+
+On Test Loop #3
+Random Parameters:
+Number of players: 2
+Testing player: 0
+
+*********TESTING CARD baron WITH CHOICE 1 *********
+
+******* TEST 15: Number of Buys after playing *******
+Number of Buys after playing baron = 2; Target number = 2....TEST OK!
+
+Discarding Estate!
+******* TEST 16: Number of cards in hand *******
+Number of cards in hand after playing baron = 4; Target number = 3....TEST FAILED.
+
+******* TEST 17: Number of Estates in hand ********
+Number of estates in hand after playing baron = 0; Target number = 0....TEST OK!
+
+******* TEST 18: Number of Coins ********
+Number of coins after playing baron = 8; Target number = 8....TEST OK!
+
+******* TEST 19: Number of Estates in discard ********
+Number of estates in discard after playing baron = 1; Target number = 1....TEST OK!
+
+On Test Loop #4
+Random Parameters:
+Number of players: 3
+Testing player: 1
+
+*********TESTING CARD baron WITH CHOICE 1 *********
+
+******* TEST 20: Number of Buys after playing *******
+Number of Buys after playing baron = 2; Target number = 2....TEST OK!
+
+Discarding Estate!
+******* TEST 21: Number of cards in hand *******
+Number of cards in hand after playing baron = 0; Target number = -2....TEST FAILED.
+
+******* TEST 22: Number of Estates in hand ********
+Number of estates in hand after playing baron = 0; Target number = -1....TEST FAILED.
+
+******* TEST 23: Number of Coins ********
+Number of coins after playing baron = 8; Target number = 8....TEST OK!
+
+******* TEST 24: Number of Estates in discard ********
+Number of estates in discard after playing baron = 0; Target number = 1....TEST FAILED.
+
+On Test Loop #5
+Random Parameters:
+Number of players: 2
+Testing player: 1
+
+*********TESTING CARD baron WITH CHOICE 0 *********
+
+******* TEST 25: Number of Buys after playing *******
+Number of Buys after playing baron = 2; Target number = 2....TEST OK!
+
+Not Discarding -- Gain an Estate!
+******* TEST 26: Number of cards in hand *******
+Number of cards in hand after playing baron = 0; Target number = 0....TEST OK!
+
+******* TEST 27: Number of Estates in hand ********
+Number of estates in hand after playing baron = 0; Target number = 0....TEST OK!
+
+******* TEST 28: Number of Coins ********
+Number of coins after playing baron = 4; Target number = 4....TEST OK!
+
+******* TEST 29: Number of Estates in discard ********
+Number of estates in discard after playing baron = 0; Target number = 1....TEST FAILED.
+
+On Test Loop #6
+Random Parameters:
+Number of players: 2
+Testing player: 2
+
+*********TESTING CARD baron WITH CHOICE 1 *********
+
+******* TEST 30: Number of Buys after playing *******
+Number of Buys after playing baron = 2; Target number = 2....TEST OK!
+
+Discarding Estate!
+******* TEST 31: Number of cards in hand *******
+Number of cards in hand after playing baron = 0; Target number = -2....TEST FAILED.
+
+******* TEST 32: Number of Estates in hand ********
+Number of estates in hand after playing baron = 0; Target number = -1....TEST FAILED.
+
+******* TEST 33: Number of Coins ********
+Number of coins after playing baron = 8; Target number = 8....TEST OK!
+
+******* TEST 34: Number of Estates in discard ********
+Number of estates in discard after playing baron = 0; Target number = 1....TEST FAILED.
+
+On Test Loop #7
+Random Parameters:
+Number of players: 3
+Testing player: 0
+
+*********TESTING CARD baron WITH CHOICE 1 *********
+
+******* TEST 35: Number of Buys after playing *******
+Number of Buys after playing baron = 2; Target number = 2....TEST OK!
+
+Discarding Estate!
+******* TEST 36: Number of cards in hand *******
+Number of cards in hand after playing baron = 4; Target number = 3....TEST FAILED.
+
+******* TEST 37: Number of Estates in hand ********
+Number of estates in hand after playing baron = 0; Target number = 0....TEST OK!
+
+******* TEST 38: Number of Coins ********
+Number of coins after playing baron = 8; Target number = 8....TEST OK!
+
+******* TEST 39: Number of Estates in discard ********
+Number of estates in discard after playing baron = 1; Target number = 1....TEST OK!
+
+On Test Loop #8
+Random Parameters:
+Number of players: 4
+Testing player: 2
+
+*********TESTING CARD baron WITH CHOICE 1 *********
+
+******* TEST 40: Number of Buys after playing *******
+Number of Buys after playing baron = 2; Target number = 2....TEST OK!
+
+Discarding Estate!
+******* TEST 41: Number of cards in hand *******
+Number of cards in hand after playing baron = 0; Target number = -2....TEST FAILED.
+
+******* TEST 42: Number of Estates in hand ********
+Number of estates in hand after playing baron = 0; Target number = -1....TEST FAILED.
+
+******* TEST 43: Number of Coins ********
+Number of coins after playing baron = 8; Target number = 8....TEST OK!
+
+******* TEST 44: Number of Estates in discard ********
+Number of estates in discard after playing baron = 0; Target number = 1....TEST FAILED.
+
+On Test Loop #9
+Random Parameters:
+Number of players: 3
+Testing player: 2
+
+*********TESTING CARD baron WITH CHOICE 1 *********
+
+******* TEST 45: Number of Buys after playing *******
+Number of Buys after playing baron = 2; Target number = 2....TEST OK!
+
+Discarding Estate!
+******* TEST 46: Number of cards in hand *******
+Number of cards in hand after playing baron = 0; Target number = -2....TEST FAILED.
+
+******* TEST 47: Number of Estates in hand ********
+Number of estates in hand after playing baron = 0; Target number = -1....TEST FAILED.
+
+******* TEST 48: Number of Coins ********
+Number of coins after playing baron = 8; Target number = 8....TEST OK!
+
+******* TEST 49: Number of Estates in discard ********
+Number of estates in discard after playing baron = 0; Target number = 1....TEST FAILED.
+
+
+ RANDOM TESTING COMPLETED: 30 / 50 TESTS PASSED.
+
+File 'dominion.c'
+Lines executed:48.66% of 559
+Creating 'dominion.c.gcov'
+

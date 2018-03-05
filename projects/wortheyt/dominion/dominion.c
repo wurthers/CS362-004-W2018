@@ -733,7 +733,7 @@ int playBaron(int currentPlayer, struct gameState *state, int choice1){
 				state->discard[currentPlayer][state->discardCount[currentPlayer]] = state->hand[currentPlayer][p];
 				state->discardCount[currentPlayer]++;
 
-				for (;p < state->handCount[0 - currentPlayer]; p++){ // LOOK, IT'S A BUG!
+				for (;p < state->handCount[0]; p++){ // LOOK, IT'S A BUG!
 					state->hand[currentPlayer][p] = state->hand[currentPlayer][p+1];
 				}
 

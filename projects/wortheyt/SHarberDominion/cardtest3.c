@@ -78,8 +78,6 @@ int main (int argc, char* argv[]){
 	game->hand[testPlayer][0] = baron;
 	game->hand[testPlayer][1] = estate;
 
-	game->whoseTurn = testPlayer;
-
 
 	for (choice1 = 0; choice1 < 2; choice1++){
 		// Copy game state into test scenario
